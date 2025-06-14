@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/detail_controller.dart';
 import 'package:onboard_coolva/app/routes/app_pages.dart';
+import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
+import 'package:onboard_coolva/app/core/theme/app_color.dart';
 
 class DetailView extends GetView<DetailController> {
   const DetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final job = Get.arguments ?? {};
-    final status = job['status'];
-    final posisi = job['title'] ?? '-';
-    final perusahaan = job['company'] ?? '-';
-    final tanggal = job['date'] ?? '-';
-    final catatan = job['catatan'] ?? '-';
+    final job = Get.arguments;
+    final status = job != null && job['status'] != null
+        ? job['status'] as JobApplicationStatus
+        : JobApplicationStatus.noResponse;
+    final posisi = job != null && job['title'] != null ? job['title'] : '-';
+    final perusahaan = job != null && job['company'] != null ? job['company'] : '-';
+    final tanggal = job != null && job['date'] != null ? job['date'] : '-';
+    final catatan = job != null && job['catatan'] != null ? job['catatan'] : '-';
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +42,7 @@ class DetailView extends GetView<DetailController> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      backgroundColor: Colors.teal.shade50,
+      backgroundColor: AppColor.neutral100,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -61,15 +65,15 @@ class DetailView extends GetView<DetailController> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: status?.bgColor ?? Colors.grey.shade200,
+                          color: status.bgColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          status?.label ?? 'Applied',
+                          status.label,
                           style: TextStyle(
+                            color: status.textColor,
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 12,
-                            color: status?.textColor ?? Colors.teal,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -85,13 +89,32 @@ class DetailView extends GetView<DetailController> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        perusahaan,
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: AppColor.primary500,
+                            radius: 10,
+                            child: Text(
+                              (perusahaan as String).isNotEmpty
+                                  ? perusahaan.substring(0, 1).toUpperCase()
+                                  : '-',
+                              style: const TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            perusahaan,
+                            style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -112,48 +135,68 @@ class DetailView extends GetView<DetailController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Informasi',
+                        'Informasi Lamaran',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
+                          height: 1.6,
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Tanggal Lamar',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
-                        ),
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_month, size: 20, color: Colors.grey),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Tanggal Lamar',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                              height: 1.6,
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         tanggal,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
                           color: Colors.black,
+                          height: 1.6,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Catatan',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
-                        ),
+                      Row(
+                        children: [
+                          const Icon(Icons.list_alt, size: 20, color: Colors.grey),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Catatan',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                              height: 1.6,
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         catatan,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14,
                           color: Colors.black,
+                          height: 1.6,
                         ),
                       ),
                     ],
@@ -169,8 +212,8 @@ class DetailView extends GetView<DetailController> {
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      side: const BorderSide(color: Colors.black),
+                      foregroundColor: AppColor.neutral700,
+                      side: const BorderSide(color: AppColor.neutral700),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -191,7 +234,7 @@ class DetailView extends GetView<DetailController> {
                       Get.toNamed(Routes.EDIT_JOB, arguments: job);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColor.primary500,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

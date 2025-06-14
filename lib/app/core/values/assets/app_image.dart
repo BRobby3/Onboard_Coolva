@@ -12,5 +12,5 @@
 class AppImages {
   AppImages._();
 
-  static const String login_hero = "assets/images/login_hero.png";
+  static const String loginHero = "assets/images/login_hero.png";
 }

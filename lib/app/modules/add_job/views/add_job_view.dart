@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onboard_coolva/app/routes/app_pages.dart';
 import 'package:get/get.dart';
+import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
+import 'package:onboard_coolva/app/core/theme/app_color.dart';
 
 class AddJobView extends StatefulWidget {
   const AddJobView({super.key});
@@ -16,16 +18,8 @@ class _AddJobViewState extends State<AddJobView> {
   final TextEditingController tanggalController = TextEditingController();
   final TextEditingController catatanController = TextEditingController();
 
-  String? selectedStatus;
-  final List<String> statusList = [
-    'Applied',
-    'Interview',
-    'On Test',
-    'Ghosting',
-    'Rejected',
-    'Offering',
-    'Noticed',
-  ];
+  JobApplicationStatus? selectedStatus;
+  final List<JobApplicationStatus> statusList = JobApplicationStatus.values;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +36,7 @@ class _AddJobViewState extends State<AddJobView> {
           },
         ),
         title: const Text(
-          'Detail Lamaran',
+          'Tambah Lamaran',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontWeight: FontWeight.w600,
@@ -52,7 +46,7 @@ class _AddJobViewState extends State<AddJobView> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      backgroundColor: Colors.teal.shade50,
+      backgroundColor: AppColor.neutral100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -161,22 +155,21 @@ class _AddJobViewState extends State<AddJobView> {
                       const SizedBox(height: 16),
                       SizedBox(
                         height: 56,
-                        child: DropdownButtonFormField<String>(
+                        child: DropdownButtonFormField<JobApplicationStatus>(
                           value: selectedStatus,
-                          items:
-                              statusList
-                                  .map(
-                                    (status) => DropdownMenuItem(
-                                      value: status,
-                                      child: Text(
-                                        status,
-                                        style: const TextStyle(
-                                          fontFamily: 'PlusJakartaSans',
-                                        ),
-                                      ),
+                          items: statusList
+                              .map(
+                                (status) => DropdownMenuItem(
+                                  value: status,
+                                  child: Text(
+                                    status.label,
+                                    style: const TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
                                     ),
-                                  )
-                                  .toList(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
                           onChanged: (value) {
                             setState(() {
                               selectedStatus = value;
@@ -191,11 +184,8 @@ class _AddJobViewState extends State<AddJobView> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          validator:
-                              (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Wajib diisi'
-                                      : null,
+                          validator: (value) =>
+                              value == null ? 'Wajib diisi' : null,
                           style: const TextStyle(fontFamily: 'PlusJakartaSans'),
                         ),
                       ),
@@ -225,7 +215,7 @@ class _AddJobViewState extends State<AddJobView> {
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColor.primary500,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:onboard_coolva/app/routes/app_pages.dart';
-
 import '../controllers/login_controller.dart';
+import 'package:onboard_coolva/app/core/values/assets/app_image.dart';
+import 'package:onboard_coolva/app/core/values/assets/app_icon.dart';
+import 'package:onboard_coolva/app/core/theme/app_color.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
@@ -25,16 +27,12 @@ class LoginView extends GetView<LoginController> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 40,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(58, 71, 100, 1.0),
+                      color: AppColor.neutral700,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
-                  Image.asset(
-                    'illustration_tracking@2x.png',
-                    height: 360,
-                    width: 360,
-                  ),
+                  Image.asset(AppImages.loginHero, height: 360, width: 360),
                 ],
               ),
               const Spacer(flex: 3),
@@ -44,13 +42,7 @@ class LoginView extends GetView<LoginController> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
                 ),
                 child: GestureDetector(
                   onTap: () {
@@ -64,15 +56,24 @@ class LoginView extends GetView<LoginController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('ic_google.png', height: 36, width: 36),
-                        const SizedBox(width: 32),
-                        const Text(
-                          'Masuk dengan akun Google',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            color: Color.fromRGBO(58, 71, 100, 1.0),
+                        SvgPicture.asset(
+                          AppIcons.googleLogo,
+                          height: 36,
+                          width: 36,
+                        ),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Masuk dengan akun Google',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: AppColor.neutral700,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],

@@ -16,6 +16,7 @@ class AppColor {
   static const success700 = Color(0xFF5B8F09);
 
   /// NEUTRAL COLORS
+  static const neutral100 = Color(0xFFF0F5F9);
   static const neutral700 = Color(0xFF3A4764);
 
   static const white = Colors.white;

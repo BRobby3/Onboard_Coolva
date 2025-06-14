@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onboard_coolva/app/routes/app_pages.dart';
+import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
+import 'package:onboard_coolva/app/core/theme/app_color.dart';
+
 
 class EditJobView extends StatefulWidget {
   const EditJobView({super.key});
@@ -16,16 +19,8 @@ class _EditJobViewState extends State<EditJobView> {
   final TextEditingController tanggalController = TextEditingController();
   final TextEditingController catatanController = TextEditingController();
 
-  String? selectedStatus;
-  final List<String> statusList = [
-    'Applied',
-    'Interview',
-    'On Test',
-    'Ghosting',
-    'Rejected',
-    'Offering',
-    'Noticed',
-  ];
+  final List<JobApplicationStatus> statusList = JobApplicationStatus.values;
+  JobApplicationStatus? selectedStatus;
 
   @override
   void initState() {
@@ -36,7 +31,9 @@ class _EditJobViewState extends State<EditJobView> {
       perusahaanController.text = job['company'] ?? '';
       tanggalController.text = job['date'] ?? '';
       catatanController.text = job['catatan'] ?? '';
-      selectedStatus = job['status']?.label ?? null;
+      selectedStatus = job['status'] is JobApplicationStatus
+          ? job['status']
+          : null;
     }
   }
 
@@ -55,7 +52,7 @@ class _EditJobViewState extends State<EditJobView> {
           },
         ),
         title: const Text(
-          'Detail Lamaran',
+          'Edit Lamaran',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontWeight: FontWeight.w600,
@@ -65,7 +62,7 @@ class _EditJobViewState extends State<EditJobView> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      backgroundColor: Colors.teal.shade50,
+      backgroundColor: AppColor.neutral100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -92,7 +89,7 @@ class _EditJobViewState extends State<EditJobView> {
                           style: const TextStyle(fontFamily: 'PlusJakartaSans'),
                           validator:
                               (value) =>
-                                  value == null || value.isEmpty
+                                  value == null
                                       ? 'Wajib diisi'
                                       : null,
                         ),
@@ -114,7 +111,7 @@ class _EditJobViewState extends State<EditJobView> {
                           style: const TextStyle(fontFamily: 'PlusJakartaSans'),
                           validator:
                               (value) =>
-                                  value == null || value.isEmpty
+                                  value == null
                                       ? 'Wajib diisi'
                                       : null,
                         ),
@@ -174,22 +171,14 @@ class _EditJobViewState extends State<EditJobView> {
                       const SizedBox(height: 16),
                       SizedBox(
                         height: 56,
-                        child: DropdownButtonFormField<String>(
+                        child: DropdownButtonFormField<JobApplicationStatus>(
                           value: selectedStatus,
-                          items:
-                              statusList
-                                  .map(
-                                    (status) => DropdownMenuItem(
-                                      value: status,
-                                      child: Text(
-                                        status,
-                                        style: const TextStyle(
-                                          fontFamily: 'PlusJakartaSans',
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
+                          items: statusList
+                              .map((status) => DropdownMenuItem(
+                                    value: status,
+                                    child: Text(status.label),
+                                  ))
+                              .toList(),
                           onChanged: (value) {
                             setState(() {
                               selectedStatus = value;
@@ -206,7 +195,7 @@ class _EditJobViewState extends State<EditJobView> {
                           ),
                           validator:
                               (value) =>
-                                  value == null || value.isEmpty
+                                  value == null
                                       ? 'Wajib diisi'
                                       : null,
                           style: const TextStyle(fontFamily: 'PlusJakartaSans'),
@@ -238,7 +227,7 @@ class _EditJobViewState extends State<EditJobView> {
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColor.primary500,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
