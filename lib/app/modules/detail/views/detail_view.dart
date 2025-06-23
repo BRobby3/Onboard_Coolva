@@ -209,7 +209,13 @@ class DetailView extends GetView<DetailController> {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (job != null && job['id'] != null) {
+                        await controller.firestoreService.deleteJob(job['id']);
+                        Get.back();
+                        Get.snackbar('Sukses', 'Lamaran berhasil dihapus');
+                      }
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: AppColor.neutral700,
@@ -231,7 +237,9 @@ class DetailView extends GetView<DetailController> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.toNamed(Routes.EDIT_JOB, arguments: job);
+                      if (job != null) {
+                        Get.toNamed(Routes.EDIT_JOB, arguments: job);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.primary500,

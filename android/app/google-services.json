@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "916306337305",
+    "project_id": "onboard-coolva",
+    "storage_bucket": "onboard-coolva.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916306337305:android:7428f263d62c64d353d488",
+        "android_client_info": {
+          "package_name": "com.coolva.robbyonboard.onboard_coolva"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3AEtbWnicckDAEQLexl5a4PIxyWRqt_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

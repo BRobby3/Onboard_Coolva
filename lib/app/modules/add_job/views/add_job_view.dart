@@ -3,6 +3,7 @@ import 'package:onboard_coolva/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
 import 'package:onboard_coolva/app/core/theme/app_color.dart';
+import 'package:onboard_coolva/app/modules/add_job/controllers/add_job_controller.dart';
 
 class AddJobView extends StatefulWidget {
   const AddJobView({super.key});
@@ -20,6 +21,7 @@ class _AddJobViewState extends State<AddJobView> {
 
   JobApplicationStatus? selectedStatus;
   final List<JobApplicationStatus> statusList = JobApplicationStatus.values;
+  final AddJobController controller = AddJobController();
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +228,19 @@ class _AddJobViewState extends State<AddJobView> {
                         fontSize: 16,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await controller.addJob(
+                          title: posisiController.text,
+                          company: perusahaanController.text,
+                          date: tanggalController.text,
+                          status: selectedStatus!,
+                          catatan: catatanController.text,
+                        );
+                        Get.back(); // or navigate as needed
+                        Get.snackbar('Sukses', 'Lamaran berhasil disimpan');
+                      }
+                    },
                     child: const Text('Simpan Lamaran'),
                   ),
                 ),

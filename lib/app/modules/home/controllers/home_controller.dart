@@ -1,23 +1,13 @@
 import 'package:get/get.dart';
+import 'package:onboard_coolva/app/data/firestore.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final FirestoreService firestoreService = FirestoreService();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  // Stream jobs from Firestore
+  Stream<List<Map<String, dynamic>>> get jobsStream => firestoreService.getListJob();
+
+  Future<void> editJob(String docId, Map<String, dynamic> data) async {
+    await firestoreService.editJob(docId, data);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

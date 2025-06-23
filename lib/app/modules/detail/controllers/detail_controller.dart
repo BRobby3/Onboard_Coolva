@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:onboard_coolva/app/data/firestore.dart';
 
 class DetailController extends GetxController {
+  final FirestoreService firestoreService = FirestoreService();
+
   //TODO: Implement DetailController
 
   final count = 0.obs;
@@ -20,4 +23,10 @@ class DetailController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  Future<void> editJob(String docId, Map<String, dynamic> data) async {
+    await firestoreService.editJob(docId, data);
+  }
+
+  Stream<List<Map<String, dynamic>>> get jobsStream => firestoreService.getListJob();
 }

@@ -45,8 +45,14 @@ class LoginView extends GetView<LoginController> {
                   border: Border.all(color: Colors.grey.shade300, width: 1.5),
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.HOME);
+                  onTap: () async {
+                    final userCredential = await controller.signInWithGoogle();
+                    if (userCredential != null) {
+                      Get.toNamed(Routes.HOME);
+                      Get.snackbar('Login Berhasil', 'Selamat datang, ${userCredential.user?.displayName ?? ''}');
+                    } else {
+                      Get.snackbar('Login Gagal', 'Tidak dapat masuk dengan akun Google');
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(

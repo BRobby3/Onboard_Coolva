@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:onboard_coolva/app/routes/app_pages.dart';
 import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
 import 'package:onboard_coolva/app/core/theme/app_color.dart';
+import 'package:onboard_coolva/app/modules/edit_job/controllers/edit_job_controller.dart';
 
 
 class EditJobView extends StatefulWidget {
@@ -22,6 +23,8 @@ class _EditJobViewState extends State<EditJobView> {
   final List<JobApplicationStatus> statusList = JobApplicationStatus.values;
   JobApplicationStatus? selectedStatus;
 
+  final EditJobController controller = EditJobController();
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +42,8 @@ class _EditJobViewState extends State<EditJobView> {
 
   @override
   Widget build(BuildContext context) {
+    final job = Get.arguments;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -238,8 +243,20 @@ class _EditJobViewState extends State<EditJobView> {
                         fontSize: 16,
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        if (job != null && job['id'] != null) {
+                          await controller.editJob(job['id'], {
+                            'title': posisiController.text,
+                            'company': perusahaanController.text,
+                            'date': tanggalController.text,
+                            'status': selectedStatus?.name,
+                            'catatan': catatanController.text,
+                          });
+                          Get.back();
+                          Get.snackbar('Sukses', 'Lamaran berhasil diperbarui');
+                        }
+                      }
                     },
                     child: const Text('Simpan Perubahan'),
                   ),
