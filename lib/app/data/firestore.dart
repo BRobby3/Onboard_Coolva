@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onboard_coolva/app/core/values/constants/job_app_status_constants.dart';
 
 class FirestoreService {
@@ -10,6 +11,7 @@ class FirestoreService {
     required String company,
     required String date,
     required JobApplicationStatus status,
+    required String uid,
     String? catatan,
   }) async {
     await jobs.add({
@@ -18,6 +20,7 @@ class FirestoreService {
       'date': date,
       'status': status.name,
       'catatan': catatan ?? '',
+      'uid': uid,
     });
   }
 
@@ -30,7 +33,11 @@ class FirestoreService {
   }
 
   Stream<List<Map<String, dynamic>>> getListJob() {
-    return jobs.snapshots().map((snapshot) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      return Stream.value([]);
+    }
+    return jobs.where('uid', isEqualTo: uid).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return {
